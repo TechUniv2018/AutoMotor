@@ -30,7 +30,7 @@ class App
     (0..END_TIME).each do |time|
       puts "TIME #{time}"
       @cars.each do |car|
-        puts "CAR #{car}: #{car.position_at(time)}"
+        puts "CAR #{car} #{car.position_at(time)}"
         car.move(@cars, time)
         if INTERSECTION.include?(car.position)
           reservation = Hub.reserve(car)

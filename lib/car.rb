@@ -20,7 +20,7 @@ class Car
 
   def move(cars, t)
     return false if time != t
-    # position_vector.push(x: 2, y: 4, time: 4) if t==3 && id==44
+    # position_vector.push(x: 2, y: 4, time: 4) if t == 3 && id == 44
     curr_pos = position_vector.last
     x = curr_pos[:x]
     y = curr_pos[:y]
@@ -66,7 +66,7 @@ class Car
     cars = cars.select do |car|
       coords = { x: new_x, y: new_y, time: time + 1 }
       car_coords = car.position_at(time + 1)
-      puts "hhhh #{car_coords} == #{coords}, #{coords == car_coords}"
+      # puts "hhhh #{car_coords} == #{coords}, #{coords == car_coords}"
       coords == car_coords
     end
     !cars.empty?
@@ -78,20 +78,8 @@ class Car
   end
 
   def get_y_coord(starting)
-    case starting
-    when 3, 4
-      11
-    when 7, 8
-      0
-    when 1
-      4
-    when 2
-      5
-    when 5
-      7
-    when 6
-      6
-    end
+    coord = { 1 => 4, 2 => 5, 3 => 11, 4 => 11, 5 => 7, 6 => 6, 7 => 0, 8 => 0 }
+    coord[starting]
   end
 
   def update_x(x)
