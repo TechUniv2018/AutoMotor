@@ -5,9 +5,6 @@ class Car
   attr_accessor :id, :position_vector
   attr_accessor :turn
 
-  @width = Math.sqrt(2)
-  @height = 2 * @width
-
   def initialize(id:, starting:, will_turn:, time:)
     @turn = false
     @id = id
@@ -73,7 +70,7 @@ class Car
   end
 
   def get_x_coord(starting)
-    coord = { 1 => 0, 2 => 0, 3 => 4, 4 => 5, 5 => 11, 6 => 11, 7 => 7, 8 => 8 }
+    coord = { 1 => 0, 2 => 0, 3 => 4, 4 => 5, 5 => 11, 6 => 11, 7 => 7, 8 => 6 }
     coord[starting]
   end
 

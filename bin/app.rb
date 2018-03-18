@@ -2,6 +2,7 @@
 
 require_relative '../lib/hub.rb'
 require_relative '../lib/car.rb'
+require 'json'
 
 ## Main app that spawns cars and creates the intersection hub
 class App
@@ -12,8 +13,8 @@ class App
     [4, 3], [5, 3], [6, 3], [7, 3],
     [4, 8], [5, 8], [6, 8], [7, 8]
   ].freeze
-  NUM_CARS = 2
-  END_TIME = 11
+  NUM_CARS = 12
+  END_TIME = 12
 
   def initialize
     @cars = []
@@ -21,25 +22,30 @@ class App
       new_car = Car.new(get_details(id))
       @cars.push(new_car) if not_exists(new_car)
     end
-    # @cars.push(Car.new(id: 11, starting: 1, will_turn: false, time: 2))
-    # @cars.push(Car.new(id: 44, starting: 1, will_turn: false, time: 1))
+    # @cars.push(Car.new(id: 11, starting: 7, will_turn: true, time: 3))
+    # @cars.push(Car.new(id: 22, starting: 1, will_turn: false, time: 4))
+    # @cars.push(Car.new(id: 44, starting: 3, will_turn: false, time: 0))
     @cars = @cars.sort_by(&:time)
   end
 
   def start
+    data = []
     (0..END_TIME).each do |time|
-      puts "TIME #{time}"
+      time_data = { time: time, cars: [] }
       @cars.each do |car|
-        puts "CAR #{car} #{car.position_at(time)}"
+        time_data[:cars].push(id: car.id,
+                              lane: car.starting,
+                              turn: car.will_turn,
+                              positon: car.position_at(time))
         car.move(@cars, time)
         if INTERSECTION.include?(car.position)
           reservation = Hub.reserve(car)
-          if reservation
-            car.position_vector.concat(reservation)
-          end
+          car.position_vector.concat(reservation) if reservation
         end
       end
+      data.push(time_data)
     end
+    File.open('data.json', 'w') { |f| f.write(JSON.generate(data)) }
   end
 
   private
